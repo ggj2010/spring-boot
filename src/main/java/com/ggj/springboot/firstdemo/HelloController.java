@@ -8,7 +8,7 @@ public class HelloController {
 	
 	@RequestMapping("/")
 	public String index() {
-		return "Greetings from Spring Boot!";
+		return "Greetings from Spring Boot! 这个是用IntelliJ IDEA15.0.2开发";
 	}
 	
 }
