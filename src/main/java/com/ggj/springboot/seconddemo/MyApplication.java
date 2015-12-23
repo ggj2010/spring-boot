@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 
 /**
  * author:gaoguangjin
- * Description:自定义端口号,http://localhost/rest
+ * Description:自定义端口号.http://localhost/rest
  * Email:335424093@qq.com
  * Date 2015/12/23 10:09
  */
