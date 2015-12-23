@@ -12,8 +12,7 @@
 		<lombok.version>1.16.4</lombok.version>
 		<fastjson.version>1.2.7</fastjson.version>
 
-	<!--	<tomcat.version>2.2</tomcat.version>
-		<webserver.port>80</webserver.port>-->
+		<webserver.port>80</webserver.port>
 	</properties>
 
 	<parent>
@@ -46,8 +45,19 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+            <!--使用tomcat7:run启动项目需要去除这些类-->
+            <exclusions>
+                <exclusion>
+                    <artifactId>tomcat-embed-websocket</artifactId>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>tomcat-embed-core</artifactId>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                </exclusion>
+            </exclusions>
 
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -59,15 +69,15 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-		<!--	<plugin>
+			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>${tomcat.version}</version>
-				<configuration>
+				<version>2.2</version>
+				<!--<configuration>
 					<port>${webserver.port}</port>
 					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
-				</configuration>
-			</plugin>-->
+				</configuration>-->
+			</plugin>
 
 		</plugins>
 
