@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Message {
+    private Long id;
     private String name;
     private String content;
 }

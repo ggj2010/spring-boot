@@ -46,7 +46,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
             <!--使用tomcat7:run启动项目需要去除这些类-->
-            <exclusions>
+        <exclusions>
                 <exclusion>
                     <artifactId>tomcat-embed-websocket</artifactId>
                     <groupId>org.apache.tomcat.embed</groupId>
