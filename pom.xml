@@ -40,13 +40,18 @@
 			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
+<!--html主要用ThyMeleaf标签，Thymeleaf是一个XML/XHTML/HTML5模板引擎-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 
 		<!--spring Boot -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
             <!--使用tomcat7:run启动项目需要去除这些类-->
-        <exclusions>
+      <!--  <exclusions>
                 <exclusion>
                     <artifactId>tomcat-embed-websocket</artifactId>
                     <groupId>org.apache.tomcat.embed</groupId>
@@ -55,14 +60,14 @@
                     <artifactId>tomcat-embed-core</artifactId>
                     <groupId>org.apache.tomcat.embed</groupId>
                 </exclusion>
-            </exclusions>
+            </exclusions>-->
         </dependency>
-		<dependency>
+	<!--	<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>4.0.0-b01</version>
 			<scope>provided</scope>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<build>
