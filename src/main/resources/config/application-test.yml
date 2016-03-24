@@ -1,0 +1,7 @@
+spring:
+ profiles: test
+ #仅仅为了测试profiles
+db:
+ url: test
+ username: test
+ password: test

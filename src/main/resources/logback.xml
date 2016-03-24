@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+    <!--测试时候com.ggj.springboot.controller 只有ERROR级别的日志才会打印出来-->
+    <logger name="com.ggj.springboot.controller" level="ERROR" />
+</configuration>
+
+
+
+
+
+
+
+
+
