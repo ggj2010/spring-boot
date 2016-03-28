@@ -1,4 +1,4 @@
 spring:
  profiles:
- #激活不同的profile test/dev
+ #激活不同的profile test/dev/product
   active: dev
