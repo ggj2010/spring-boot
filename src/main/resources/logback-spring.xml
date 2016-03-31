@@ -8,13 +8,13 @@
         <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
         <!--自定义日志级别-->
-        <logger name=" logging.level.org.springframework.web" level="DEBUG"/>
-        <logger name=" logging.level.org.hibernate" level="ERROR"/>
+        <logger name="logging.level.org.springframework.web" level="DEBUG"/>
+        <logger name="logging.level.org.hibernate" level="ERROR"/>
         <logger name="com.ggj.springboot.controller" level="INFO"/>
 
         <!--设置info级别，debug的日志就打印不出来了-->
         <root level="INFO">
-            <appender-ref ref="FILE"/>
+            <!--<appender-ref ref="FILE"/>-->
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
@@ -25,8 +25,12 @@
         <appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <File>${LOG_PATH}/log_error.log</File>
             <encoder>
-                <pattern>[%level][%date]%logger[%line] %msg%n</pattern>
+                <pattern>${FILE_LOG_PATTERN}</pattern>
             </encoder>
+            <!--当prudent为true时，如果append设置为false，会被强行转成true-->
+            <append>true</append>
+            <!--prudent：小心的，慎重的。如果设置为true，不同JVM的file appenders能够安全地将日志输出到同一个文件中。 -->
+            <prudent>false</prudent>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!--归档的日志文件的路径-->
                 <fileNamePattern>${LOG_PATH}/log-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
@@ -40,11 +44,135 @@
 
         <!-- 指定某个包下面的日志级别，如果root设置的日志级别为info 而某个包设置的为debug，这样某个包也可以打印debug的日志了 -->
         <logger name="com.ggj" level="INFO" />
-        <root level="INFO">
+        <root level="info">
             <appender-ref ref="logfile"/>
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
+    <!--日志测试 可以参考博客http://czj4451.iteye.com/blog/1974831-->
+    <springProfile name="logtest">
+        <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+        <!--第一步测试-->
+
+        <!--独立的logger可以重写root的日志级别，additivity属性标示只会-->
+        <!--所有logger的始祖是ROOT，默认会继承ROOT的配置，因此LogBackOne中的日志会打印两次。 解决：logger的additivity属性设置为false >-->
+      <!--  <logger name="com.ggj.springboot.logback.LogBackOne" level="DEBUG">-->
+        <logger name="com.ggj.springboot.logback.LogBackOne" level="DEBUG" additivity="false">
+           <!--LogBackOne类或包下面的日志可以特殊处理 追加到不同的appender-->
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <!--根级别，所有的类info以上级别都可以打印-->
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+    <springProfile name="logtest2">
+        <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+        <!--第二步测试 输出日志到不同文件 -->
+        <appender name="logBackOne" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>/logs/logBackOne.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>/logs/LogBackOne-%d{yyyy-MM-dd}.log</fileNamePattern>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${FILE_LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <appender name="logBackTwo" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>/logs/logBackTwo.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>/logs/logBackTwo-%d{yyyy-MM-dd}.log</fileNamePattern>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${FILE_LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+        <!--根据包输出，通过logger的name属性指定不同的包-->
+        <logger name="com.ggj.springboot.logback.LogBackOne" level="DEBUG" additivity="false">
+            <appender-ref ref="logBackOne"/>
+        </logger>
+
+        <logger name="com.ggj.springboot.logback.LogBackTwo" level="DEBUG" additivity="false">
+            <appender-ref ref="logBackTwo"/>
+        </logger>
+
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+    <!--根据日志级别输出-->
+    <springProfile name="logtest3">
+        <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+        <!--第二步测试 输出日志到不同文件 -->
+        <appender name="logBackOne" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>/logs/logBackOne.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>/logs/LogBackOne-%d{yyyy-MM-dd}.log</fileNamePattern>
+            </rollingPolicy>
+            <encoder>
+                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+            </encoder>
+            <!--级别过滤器，这样错误日志就不会在logBackOne打印了-->
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>ERROR</level>
+                <onMatch>DENY</onMatch>
+                <onMismatch>ACCEPT</onMismatch>
+            </filter>
+        </appender>
+
+        <appender name="logBackTwo" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>/logs/logBackTwo.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>/logs/logBackTwo-%d{yyyy-MM-dd}.log</fileNamePattern>
+            </rollingPolicy>
+            <encoder>
+                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+            </encoder>
+            <!--级别过滤器，这样错误日志就不会在logBackTwo打印了-->
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>ERROR</level>
+                <onMatch>DENY</onMatch>
+                <onMismatch>ACCEPT</onMismatch>
+            </filter>
+        </appender>
+
+        <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>/logs/error.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>/logs/error-%d{yyyy-MM-dd}.log</fileNamePattern>
+            </rollingPolicy>
+            <encoder>
+                <pattern>%d{HH:mm:ss.SSS} %thread %X{invokeNo} %logger{40} %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印错误日志 -->
+                <level>ERROR</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+        </appender>
+        <!--根据包输出，通过logger的name属性指定不同的包-->
+        <logger name="com.ggj.springboot.logback.LogBackOne" level="DEBUG" additivity="false">
+            <appender-ref ref="logBackOne"/>
+            <appender-ref ref="errorAppender" />
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+
+        <logger name="com.ggj.springboot.logback.LogBackTwo" level="DEBUG" additivity="false">
+            <appender-ref ref="logBackTwo"/>
+            <appender-ref ref="errorAppender" />
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+
 </configuration>
 
 

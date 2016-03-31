@@ -1,5 +1,6 @@
 package com.ggj.springboot.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,7 @@ public class ClassRoom {
     @Column(name = "room_size")
     private int roomSize;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "classRoom", cascade = { javax.persistence.CascadeType.REMOVE })
     private List<Student> listStudent;
     public ClassRoom(){}

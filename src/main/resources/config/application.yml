@@ -2,3 +2,4 @@ spring:
  profiles:
  #激活不同的profile test/dev/product
   active: dev
+  incloud: dev,test,product,logtest,logtest2,logtest3

@@ -1,5 +1,6 @@
 package com.ggj.springboot.database.h2.service;
 
+import com.ggj.springboot.BaseTest;
 import com.ggj.springboot.MainApplication;
 import com.ggj.springboot.bean.Student;
 import org.junit.After;
@@ -22,9 +23,7 @@ import static org.junit.Assert.*;
  * Email:335424093@qq.com
  * Date 2016/3/24 16:37
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = MainApplication.class)
-public class StudentServiceTest {
+public class StudentServiceTest extends BaseTest {
 
     @Autowired
     private StudentService studentService;
