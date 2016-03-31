@@ -43,9 +43,14 @@
             <artifactId>spring-boot-actuator-docs</artifactId>
         </dependency>
         <!--安全-->
-        <dependency>
+   <!--     <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
         </dependency>
 
         <!-- Swagger resutApi -->
