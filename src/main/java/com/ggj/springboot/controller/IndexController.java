@@ -34,6 +34,7 @@ public class IndexController {
     public String index(Model model, @RequestParam(name = "name", defaultValue = "gaoguangjin", required = false) String name) throws InterruptedException {
         model.addAttribute("name", name);
         System.out.println("atomicInteger=" + atomicInteger.incrementAndGet() + "======" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date()));
+        Thread.sleep(1000);
         return "hellow";
     }
 
