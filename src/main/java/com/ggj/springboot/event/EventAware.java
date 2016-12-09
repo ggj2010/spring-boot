@@ -19,6 +19,7 @@ public class EventAware implements ApplicationContextAware {
     }
 
     public void  sendContent(ContentEvent contentEvent){
+        //AbstractApplicationContext
         applicationContext.publishEvent(contentEvent);
     }
 
