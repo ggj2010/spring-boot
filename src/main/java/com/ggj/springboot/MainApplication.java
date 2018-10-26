@@ -52,7 +52,7 @@ public class MainApplication {
             @Override
             public void customize(Connector connector) {
                 Http11NioProtocol http11NioProtocol = (Http11NioProtocol) connector.getProtocolHandler();
-                http11NioProtocol.setPort(81);
+                http11NioProtocol.setPort(8080);
                 //设置最大线程数
                 http11NioProtocol.setMaxThreads(900);
                 //设置初始线程数  最小空闲线程数
@@ -110,5 +110,7 @@ public class MainApplication {
     public TestH2Runner testH2Runner() {
         return new TestH2Runner();
     }*/
+
+
 
 }
